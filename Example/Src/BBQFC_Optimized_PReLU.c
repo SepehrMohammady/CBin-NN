@@ -1,6 +1,6 @@
 #include "CBin-NN.h"
 
-void BBQFC_Optimized_PReLU(float out[], 
+void BBQFC_Optimized_PReLU(float out[],
          int out_dim, 
          int in_dim, 
          int bias[],
