@@ -1,6 +1,6 @@
 #include "CBin-NN.h"
 
-void BMaxPool2D(int out[], 
+void BMaxPool2D_Optimized(int out[],
                int in_ch, 
                int in_dim, 
                int out_dim, 
