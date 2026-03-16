@@ -16,6 +16,9 @@
 void QBConv2D(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_alpha1[], float bn_alpha2[], uint8_t input[]);
 void QBConv2D_Optimized(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_alpha1[], float bn_alpha2[], uint8_t input[]);
 void QBConv2D_Optimized_PReLU(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_alpha1[], float bn_alpha2[], float shift[], uint8_t input[]);
+void BBQConv2D(float out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_wt[], int input[]);
+void BBQConv2D_Optimized(float out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_wt[], int input[]);
+void BBQConv2D_Optimized_PReLU(float out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int weight[], float bn_wt[], float shift[], int input[]);
 void QQConv2D(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int8_t weight[], float bn_alpha1[], float bn_alpha2[], uint8_t input[]);
 void QQConv2D_Optimized(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int8_t weight[], float bn_alpha1[], float bn_alpha2[], uint8_t input[]);
 void QQConv2D_Optimized_PReLU(int out[], int out_ch, int out_dim, int in_ch, int in_dim, int ker_size, int stride, int padding, int bias[], int8_t weight[], float bn_alpha1[], float bn_alpha2[], float shift[], uint8_t input[]);
