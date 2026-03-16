@@ -14,6 +14,7 @@ void BBQFC_Optimized_PReLU(float out[],
 
     for (i = 0; i < out_dim; i++)
     {
+        #pragma GCC unroll 32
         for (j = 0; j < in_dim/32; j++)
         {
             weight_idx = (i * in_dim/32 + j);
@@ -23,6 +24,12 @@ void BBQFC_Optimized_PReLU(float out[],
         /* Bias is usually not used in BNNs, however, in case it is used uncomment the next line of code */
         // pop_count += bias[i];
         pop_count += bn_wt[i];
+        
+        /* PReLU Activation */
+        if (pop_count < 0) {
+            pop_count = pop_count * shift[i];
+        }
+
         out[i] = pop_count;
         pop_count = 0;
     }

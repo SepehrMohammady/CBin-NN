@@ -13,6 +13,7 @@ void BBQFC_Optimized(float out[],
 
     for (i = 0; i < out_dim; i++)
     {
+        #pragma GCC unroll 32
         for (j = 0; j < in_dim/32; j++)
         {
             weight_idx = (i * in_dim/32 + j);
