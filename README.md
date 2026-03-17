@@ -40,19 +40,5 @@ The Python scripts situated in the `Code Generation/` directory consume pre-trai
 
 Example implementations are currently being expanded. 
 
-## Citation
-If you find this work helpful in your research, please consider citing our original paper:
-```bibtex
-@article{cbin_nn_2024,
-  title={CBin-NN: Inference Engine for Binarized Neural Networks on Resource-Constrained Devices},
-  journal={MDPI Electronics},
-  volume={13},
-  number={9},
-  pages={1624},
-  year={2024},
-  url={https://www.mdpi.com/2079-9292/13/9/1624}
-}
-```
-
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
