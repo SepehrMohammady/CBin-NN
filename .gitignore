@@ -1,6 +1,5 @@
-Implementation_Report.md
+local/
 .venv/
-.venv\
 .vscode/
 *.exe
 *.o
