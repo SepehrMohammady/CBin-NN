@@ -20,7 +20,7 @@ def createArray(type, arrName, arr, n_elements):
 
 def save_bnn_params(weights, bias, layer_name, layer_idx, in_shape, out_shape, ker_size, stride, padding, first_file_write, in_buffer, out_buffer, BN_idx):
     myFile = open(f"bnn_params.h","a+")
-    if layer_name.startswith('QBConv2D') or layer_name.startswith('QBConv2D_Optimized') or layer_name.startswith('QBConv2D_Optimized_PReLU') or layer_name.startswith('BBConv2D') or layer_name.startswith('BBConv2D_Optimized') or layer_name.startswith('BBConv2D_Optimized_PReLU') or layer_name.startswith('BBPointwiseConv2D') or layer_name.startswith('BBPointwiseConv2D_Optimized') or layer_name.startswith('BBPointwiseConv2D_Optimized_PReLU'):
+    if layer_name.startswith('QBConv2D') or layer_name.startswith('QBConv2D_Optimized') or layer_name.startswith('QBConv2D_Optimized_PReLU') or layer_name.startswith('BBConv2D') or layer_name.startswith('BBConv2D_Optimized') or layer_name.startswith('BBConv2D_Optimized_PReLU') or layer_name.startswith('BBPointwiseConv2D') or layer_name.startswith('BBPointwiseConv2D_Optimized') or layer_name.startswith('BBPointwiseConv2D_Optimized_PReLU') or layer_name.startswith('BBQConv2D') or layer_name.startswith('BBQConv2D_Optimized') or layer_name.startswith('BBQConv2D_Optimized_PReLU'):
         conv_wt = 'CONV' + str(layer_idx) + '_WT'
         conv_bias = 'CONV' + str(layer_idx) + '_BIAS'
         in_dim = 'CONV' + str(layer_idx) + '_IN_DIM'
@@ -103,6 +103,12 @@ def save_bnn_params(weights, bias, layer_name, layer_idx, in_shape, out_shape, k
             myFile.write(f"\t{layer_name}({out_buffer}, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {in_buffer});\n")
         elif layer_name == 'BBConv2D_Optimized_PReLU':
             myFile.write(f"\t{layer_name}({out_buffer}, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {PReLU_shift.lower()}, {in_buffer});\n")
+        elif layer_name == 'BBQConv2D':
+            myFile.write(f"\t{layer_name}(classification, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {in_buffer});\n")
+        elif layer_name == 'BBQConv2D_Optimized':
+            myFile.write(f"\t{layer_name}(classification, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {in_buffer});\n")
+        elif layer_name == 'BBQConv2D_Optimized_PReLU':
+            myFile.write(f"\t{layer_name}(classification, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {PReLU_shift.lower()}, {in_buffer});\n")
         elif layer_name == 'BBPointwiseConv2D':
             myFile.write(f"\t{layer_name}({out_buffer}, {out_ch}, {out_dim}, {in_ch}, {in_dim}, {conv_ker_size}, {conv_stride}, {conv_padding}, NULL, {conv_wt.lower()}, {bn_wt.lower()}, {in_buffer});\n")
         elif layer_name == 'BBPointwiseConv2D_Optimized':

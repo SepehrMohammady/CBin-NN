@@ -47,6 +47,17 @@ def quantize_weights(weights):
     weights = np.round(weights*(2**frac_bits)).astype(int)
     return weights
 
+def check_floating_output(model, layer_idx):
+    for i in range(layer_idx + 1, len(model.layers)):
+        name = model.layers[i].name
+        if 'batch' in name or 'p_re_lu' in name or 'max_pooling' in name or 'flatten' in name:
+            continue
+        if 'dense' in name or 'activation' in name or 'global' in name:
+            return True
+        if 'conv' in name:
+            return False
+    return True
+
 ####################### ADD POINTWISE CONVOLUTION ####################
 with lq.context.quantized_scope(True):
     for layer_idx, layer in enumerate(model.layers):
@@ -66,6 +77,7 @@ with lq.context.quantized_scope(True):
 
             # Binarized weights
             if weights.max() == 1.0 and weights.min() == -1.0:
+                is_floating_out = check_floating_output(model, layer_idx)
                 if layer_idx == 0 and loop_unrolling == True and 'p_re_lu' in model.layers[layer_idx+1].name and ker_size != 1:
                     layer_name = 'QBConv2D_Optimized_PReLU'
                 elif layer_idx == 0 and loop_unrolling == True and ker_size != 1:
@@ -73,17 +85,17 @@ with lq.context.quantized_scope(True):
                 elif loop_unrolling == False and layer_idx == 0 and ker_size != 1:
                     layer_name = 'QBConv2D'
                 elif loop_unrolling == True and 'p_re_lu' in model.layers[layer_idx+1].name and ker_size != 1:
-                    layer_name = 'BBConv2D_Optimized_PReLU'
+                    layer_name = 'BBQConv2D_Optimized_PReLU' if is_floating_out else 'BBConv2D_Optimized_PReLU'
                 elif loop_unrolling == True and ker_size != 1:
-                    layer_name = 'BBConv2D_Optimized'
+                    layer_name = 'BBQConv2D_Optimized' if is_floating_out else 'BBConv2D_Optimized'
                 elif loop_unrolling == False and ker_size != 1:
-                    layer_name = 'BBConv2D'
+                    layer_name = 'BBQConv2D' if is_floating_out else 'BBConv2D'
                 elif loop_unrolling == True and 'p_re_lu' in model.layers[layer_idx+1].name and ker_size == 1:
-                    layer_name = 'BBPointwiseConv2D_Optimized_PReLU'
+                    layer_name = 'BBQPointwiseConv2D_Optimized_PReLU' if is_floating_out else 'BBPointwiseConv2D_Optimized_PReLU'
                 elif loop_unrolling == True and ker_size == 1:
-                    layer_name = 'BBPointwiseConv2D_Optimized'
+                    layer_name = 'BBQPointwiseConv2D_Optimized' if is_floating_out else 'BBPointwiseConv2D_Optimized'
                 elif loop_unrolling == False and ker_size == 1:
-                    layer_name = 'BBPointwiseConv2D'
+                    layer_name = 'BBQPointwiseConv2D' if is_floating_out else 'BBPointwiseConv2D'
                 
                 weights = weights.transpose(3,0,1,2)
                 weights = weights.astype(int)
